@@ -24,6 +24,13 @@ pnpm install
 pnpm dev
 ```
 
+## Login
+
+```js
+account:admin
+password:123456
+```
+
 ### Compile and Minify for Production
 
 ```sh
