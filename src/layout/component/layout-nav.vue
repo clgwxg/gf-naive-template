@@ -5,6 +5,7 @@
     :collapsed-width="64"
     :collapsed-icon-size="22"
     :options="menuOptions"
+    :accordion="true"
   />
 </template>
 
@@ -20,26 +21,17 @@ function renderIcon(icon) {
 }
 function renderMenu(treeMenu) {
   return treeMenu.map((item) => {
-    let query = {}
-    if (item.query) {
-      try {
-        query = JSON.parse(item.query)
-      } catch (error) {
-        console.log(error)
-      }
-    }
     let menu = {
       label: () =>
         h(
           RouterLink,
           {
-            to: item.url,
-            query: query
+            to: item.url
           },
           { default: () => item.label }
         ),
       icon: renderIcon(item.icon),
-      key: item.url
+      key: item.url || item.id
     }
 
     if (item.children) {
