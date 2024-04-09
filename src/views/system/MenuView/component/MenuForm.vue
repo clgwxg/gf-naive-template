@@ -18,7 +18,7 @@ import { yesOrNoDict, statusDict } from '@/dict/common'
 import { getMenuList, getMenu, addMenu, updateMenu } from '@/api/menu'
 import SelectIcon from './SelectIcon.vue'
 const toast = useToast()
-const defaultValue = { type: 1, isFrame: 0, isVisible: 1, status: 1, parentId: 0, isCache: 0 }
+const defaultValue = { type: 1, isFrame: 0, visible: 1, status: 1, parentId: 0, isCache: 0 }
 const formItems = [
   {
     type: 'slot',
@@ -96,7 +96,7 @@ const formItems = [
   {
     type: 'radioGroup',
     label: '显示状态',
-    field: 'isVisible',
+    field: 'visible',
     options: visibleDict,
     span: 12,
     isRender(model) {
@@ -138,33 +138,36 @@ defineExpose({
   },
   submit() {
     return new Promise((resolve) => {
-      formRef.value?.submit().then((values) => {
-        if (values.id) {
-          updateMenu(values)
-            .then((res) => {
-              if (res?.code == 2000) {
-                toast.success(res?.msg || '修改成功')
-                resolve(true)
-              } else {
-                toast.error(res?.msg || '修改失败')
-                resolve(false)
-              }
-            })
-            .catch(() => resolve())
-        } else {
-          addMenu(values)
-            .then((res) => {
-              if (res?.code == 2000) {
-                toast.success(res?.msg || '新增成功')
-                resolve(true)
-              } else {
-                toast.error(res?.msg || '新增失败')
-                resolve(false)
-              }
-            })
-            .catch(() => resolve())
-        }
-      }).catch(()=>resolve(false))
+      formRef.value
+        ?.submit()
+        .then((values) => {
+          if (values.id) {
+            updateMenu(values)
+              .then((res) => {
+                if (res?.code == 2000) {
+                  toast.success(res?.msg || '修改成功')
+                  resolve(true)
+                } else {
+                  toast.error(res?.msg || '修改失败')
+                  resolve(false)
+                }
+              })
+              .catch(() => resolve())
+          } else {
+            addMenu(values)
+              .then((res) => {
+                if (res?.code == 2000) {
+                  toast.success(res?.msg || '新增成功')
+                  resolve(true)
+                } else {
+                  toast.error(res?.msg || '新增失败')
+                  resolve(false)
+                }
+              })
+              .catch(() => resolve())
+          }
+        })
+        .catch(() => resolve(false))
     })
   }
 })
